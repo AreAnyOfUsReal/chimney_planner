@@ -1,0 +1,7 @@
+connector_line,pitch_min,pitch_max,box_height_in
+DB,0,4,11
+DB,5,9,24
+DB,10,14,36
+DVL,0,6,11
+DVL,7,13,24
+DVL,14,20,36

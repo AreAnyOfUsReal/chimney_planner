@@ -1,0 +1,35 @@
+# Publishes the web/ folder to GitHub Pages.
+# One-time setup: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+name: Deploy to GitHub Pages
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Build the catalog JSON from the CSVs
+        run: python3 tools/build_catalog.py
+      - name: Run the tests
+        run: node --test tests/*.test.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: web }
+      - id: deployment
+        uses: actions/deploy-pages@v4

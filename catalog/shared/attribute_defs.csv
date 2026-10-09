@@ -1,0 +1,8 @@
+key,type,allowed_values,unit,categories,description
+functions_as_attic_shield,bool,,,CEILING_SUPPORT_SQUARE_COLLAR|PASS_THROUGH_SHIELD,Part satisfies the attic insulation shield requirement on its own
+reduced_clearance,bool,,,CEILING_SUPPORT_SQUARE|CEILING_SUPPORT_SQUARE_COLLAR,Narrower box for tighter framing (12 in on-center)
+accepts_connector,list,SINGLE_WALL|DOUBLE_WALL,,CEILING_SUPPORT_SQUARE|CEILING_SUPPORT_SQUARE_COLLAR|CEILING_SUPPORT_ROUND|CEILING_SUPPORT_FLAT|FINISHING_COLLAR,Stovepipe types the integrated flue extension accepts
+roof_surface,enum,METAL_CORRUGATED|METAL_OR_TILE,,ROOF_FLASHING,Roof surface a specialty flashing is designed for; absent = standard shingle roof
+max_pitch_by_size,map,,pitch,ROOF_FLASHING,"Per-size pitch limit overriding pitch_max, as size:pitch"
+interior_only,bool,,,CHIMNEY_PIPE,Painted section intended for interior use only
+also_fits_sizes,text,,in,SNOW_SPLITTER,Sizes outside this product line the part also fits

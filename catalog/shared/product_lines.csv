@@ -1,0 +1,4 @@
+code,name,manufacturer,family,status,fuels,listing,listing_file,clearance_to_combustibles_in,joint_overlap_in,wall_thickness_in,continuous_flue_temp_f,default_source,notes
+DT,DuraTech,DURAVENT,CHIMNEY,ACTIVE,WOOD|COAL|OIL|GAS,UL 103 Type HT; CAN/ULC-S604,MH7399,2,1.25,1,1000,DT-CAT-2608,"Double-wall insulated all-fuel chimney, 5-8 in"
+DB,DuraBlack,DURAVENT,CONNECTOR,PLANNED,WOOD|COAL|OIL|GAS,,,,1.25,,,DT-CAT-2608,Single-wall stovepipe; overlap from DT catalog p.6. Parts not yet loaded.
+DVL,DVL,DURAVENT,CONNECTOR,PLANNED,WOOD|COAL|OIL|GAS,,,,1.5,,,DT-CAT-2608,Double-wall stovepipe; overlap from DT catalog p.6. Parts not yet loaded.

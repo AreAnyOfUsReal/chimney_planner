@@ -1,0 +1,36 @@
+rule_key,authority,scope,value,value_max,unit,statement,source_ref,verified
+dt.clearance_to_combustibles_in,MANUFACTURER,DT,2,,in,"Keep at least 2"" air space between DuraTech and combustibles.","Catalog p.4, p.6, p.7",0
+dt.diameter_match_appliance,MANUFACTURER,DT,,,,Chimney and connector diameter should equal the appliance flue outlet.,Catalog p.6,0
+dt.max_offsets,MANUFACTURER,DT,2,,count,No more than two offsets (four elbows) per installation.,Catalog p.6,0
+dt.max_elbow_angle_deg,MANUFACTURER,DT,30,,deg,Elbows are fixed 15° or 30°; offsets steeper than 30° from vertical are not allowed.,"Catalog p.6, p.8",0
+dt.elbow_strap_per_offset,MANUFACTURER,DT,1,,count,At least one elbow strap per offset; installed between the two elbows.,"Catalog p.6, p.9",0
+dt.attic_shield_required,MANUFACTURER,DT,,,,"Attic insulation shield is required whenever the chimney passes through an attic, insulated or not.",Catalog p.5,0
+dt.firestop_required,MANUFACTURER,DT,,,,Firestop radiation shield is required at each floor/ceiling penetration that has no support box.,"Catalog p.5, p.13",0
+dt.wall_thimble_with_pipe,MANUFACTURER,DT,,,,Every horizontal through-the-wall run uses a wall thimble with DuraTech pipe through it.,"Catalog p.5, p.14",0
+dt.wall_thimble_interior_projection_in,MANUFACTURER,DT,6,,in,"DuraTech pipe through a thimble extends 6"" into the room past the interior wall.","Catalog p.14, p.15",0
+dt.wall_strap_interval_ft,MANUFACTURER,DT,8,,ft,Wall straps are required at 8 ft intervals along an exterior run.,Catalog p.16,0
+dt.roof_bracket_threshold_ft,MANUFACTURER,DT,5,,ft,An extended roof bracket is required once 5 ft or more of chimney stands above the roof penetration.,"Catalog p.6, p.18",0
+dt.roof_bracket_interval_ft,MANUFACTURER,DT,5,,ft,Add another roof bracket for each additional 5 ft.,Catalog p.6,0
+dt.storm_collar_with_flashing,MANUFACTURER,DT,,,,A storm collar is required with every roof flashing.,"Catalog p.19, p.20",0
+term.min_above_penetration_ft,MANUFACTURER,DT,3,,ft,Chimney extends at least 3 ft above where it passes through the roof.,Catalog p.6 fig.1,0
+term.min_above_within_horizontal_ft,MANUFACTURER,DT,2,,ft,Chimney is at least 2 ft higher than any part of the building within the horizontal distance below.,Catalog p.6 fig.1,0
+term.horizontal_check_distance_ft,MANUFACTURER,DT,10,,ft,Horizontal radius used for the 2 ft rule.,Catalog p.6 fig.1,0
+draft.min_vertical_ft,MANUFACTURER,DT,10,15,ft,"Straight vertical system height above appliance outlet, at sea level.",Catalog p.6,0
+draft.elbow_or_altitude_factor,MANUFACTURER,DT,1.3,1.6,multiplier,"Elbows, a tee, or higher elevation call for roughly 30-60% more height.",Catalog p.6,0
+draft.high_altitude_threshold_ft,INDUSTRY,GLOBAL,2000,,ft,"Sites at or above this elevation count as high altitude, where appliance manuals commonly call for a taller chimney.",Common appliance-manual practice,0
+dt.interior_preferred,MANUFACTURER,DT,,,,Route the chimney inside the building when possible; exterior runs draft worse and build more creosote.,Catalog p.6,0
+dt.inspection_recommended,MANUFACTURER,DT,,,,Follow local code and have the finished system inspected by a certified professional.,Catalog p.6,0
+nfpa.factory_built_per_listing,NFPA211,GLOBAL,,,,Factory-built chimneys are installed per their listing and the manufacturer instructions; the listing governs clearances.,NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.connector_not_through_concealed,NFPA211,GLOBAL,,,,"A chimney connector may not pass through a ceiling, floor, attic or concealed space; the listed chimney must start below such penetrations.",NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.connector_wall_pass_through,NFPA211,GLOBAL,,,,A connector passing through a combustible wall must use a listed pass-through system or an approved method.,NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.connector_min_rise_in_per_ft,NFPA211,GLOBAL,0.25,,in/ft,Connector runs rise toward the chimney at a minimum slope.,NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.connector_max_horizontal_pct_of_vertical,NFPA211,GLOBAL,75,,%,Horizontal connector length is limited relative to the vertical chimney height above it.,NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.single_wall_connector_clearance_in,NFPA211,GLOBAL,18,,in,"Unlisted single-wall connector clearance to combustibles, absent a listed reduction.",NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.flue_not_smaller_than_outlet,NFPA211,GLOBAL,,,,Chimney flue may not be smaller than the appliance flue collar.,NFPA 211 (edition adopted by AHJ) - section to confirm,0
+nfpa.termination_3_2_10,NFPA211,GLOBAL,,,,Termination height rule (3 ft above penetration / 2 ft above anything within 10 ft).,NFPA 211 (edition adopted by AHJ) - section to confirm,0
+dt.appliance_must_approve_chimney,MANUFACTURER,DT,,,,Confirm with the appliance or fireplace manufacturer that DuraTech is approved for that model before attaching it.,Catalog p.17 (anchor plate),0
+dt.chase_top_needs_storm_collar,MANUFACTURER,DT,,,,Chase top flashing ships without a storm collar; add one where the chimney exits the chase.,Catalog p.18,0
+dt.chase_top_min_cap_clearance_in,MANUFACTURER,DT,6,,in,"At a chase top, at least 6"" from the chase top flashing to the bottom of the cap. A minimum: never less.",L150 Rev.4 p.19 Fig.26; p.20 Fig.29,0
+dt.shroud_spec_l157,MANUFACTURER,DT,,,,A decorative shroud over the termination keeps the UL listing only if built to Duravent shroud specification L157.,"Catalog p.4, p.6",0
+dt.roof_radiation_shield_per_appliance,MANUFACTURER,DT,,,,A roof radiation shield may be required by the appliance manufacturer (notably some Canadian factory-built fireplaces).,Catalog p.13,0
+dt.pass_through_shield_above_fireplace,MANUFACTURER,DT,,,,The pass-through radiation shield suits a ceiling directly above a factory-built fireplace; its top serves as the attic shield where required.,Catalog p.18,0

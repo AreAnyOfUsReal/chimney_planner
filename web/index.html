@@ -1,0 +1,851 @@
+<meta charset="utf-8">
+<title>DuraTech Chimney Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<script>
+  try { if (localStorage.getItem('chimney-planner/theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
+</script>
+<style>
+/* Layout: questionnaire column on the left, sticky results sheet on the right; stacks on phones.
+   Palette: cold-rolled steel neutrals with one ember accent; semantic colors for status only. */
+:root {
+  --bg: #eef1f3;
+  --surface: #ffffff;
+  --sunken: #f5f7f8;
+  --ink: #1b2228;
+  --muted: #5a6770;
+  --line: #d3dade;
+  --accent: #b9400f;
+  --accent-ink: #ffffff;
+  --accent-soft: #f9e6dc;
+  --steel: #8996a0;
+  --steel-hi: #c3ccd2;
+  --ok: #2c7349;
+  --warn: #8a5300;
+  --warn-bg: #fff3dc;
+  --warn-line: #e8c37d;
+  --crit: #a82418;
+  --crit-bg: #fde7e4;
+  --crit-line: #eba59d;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius: 6px;
+  --ic-mark: #ffffff;
+  color-scheme: light;
+}
+/* Light is the default whatever the device setting; the header toggle switches to dark and is remembered. */
+:root[data-theme="dark"] {
+  --bg: #11161a; --surface: #192026; --sunken: #141a1f; --ink: #e4e9ec; --muted: #98a5ae; --line: #2b353c;
+  --accent: #f07a45; --accent-ink: #1a0d06; --accent-soft: #3a2216; --steel: #6f7d87; --steel-hi: #4d5961;
+  --ok: #68c18d; --warn: #e6b05a; --warn-bg: #2d2412; --warn-line: #6b5426;
+  --crit: #f2877b; --crit-bg: #33191a; --crit-line: #6e2f2c; --ic-mark: #1a0d06; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* conditional fields: beats .field/.grid display rules */
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font-body); }
+h1, h2, h3, legend { font-family: var(--font-display); text-wrap: balance; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- header ---------- */
+.top {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px;
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--line); background: var(--surface);
+}
+.brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.brand h1 { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: 0.01em; line-height: 1; }
+.brand h1 span { color: var(--accent); }
+.brand p { margin: 0; color: var(--muted); font-size: 13px; }
+.btn {
+  border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 500;
+}
+.btn:hover { border-color: var(--steel); }
+.btn.armed { border-color: var(--crit); color: var(--crit); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* ---------- layout ---------- */
+.layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px;
+  max-width: 1320px; margin: 0 auto; padding-block: 20px 48px; padding-inline: 20px;
+}
+@media (max-width: 960px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- form ---------- */
+.form { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.example {
+  display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  padding: 10px 14px; border: 1px dashed var(--steel); border-radius: var(--radius); color: var(--muted); font-size: 14px;
+}
+fieldset.section {
+  margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); min-width: 0;
+}
+fieldset.section > legend {
+  float: left; width: 100%; padding: 14px 18px 10px; margin: 0; font-size: 22px; font-weight: 600;
+  border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 10px;
+}
+fieldset.section > legend b { font-weight: 700; color: var(--accent); font-size: 16px; letter-spacing: 0.06em; }
+fieldset.section > legend + * { clear: both; }
+.body { display: flex; flex-direction: column; gap: 16px; padding: 16px 18px 18px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px 16px; }
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.field > label, .label { font-size: 13px; font-weight: 600; }
+.hint { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+input[type="number"], input[type="text"], select {
+  width: 100%; min-width: 0; padding: 7px 9px; border: 1px solid var(--line); border-radius: 5px; background: var(--sunken);
+}
+input[type="number"] { font-variant-numeric: tabular-nums; }
+input:hover, select:hover { border-color: var(--steel); }
+.ftin { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.ftin span, .unit { color: var(--muted); font-size: 13px; }
+.withunit { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; cursor: pointer; }
+.check input { margin-top: 3px; accent-color: var(--accent); }
+
+.seg { display: flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; width: fit-content; max-width: 100%; }
+.seg label { position: relative; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.seg span { display: block; padding: 7px 14px; font-size: 14px; font-weight: 500; border-right: 1px solid var(--line); }
+.seg label:last-child span { border-right: 0; }
+.seg input:checked + span { background: var(--ink); color: var(--surface); }
+.seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.manual { border: 1px solid var(--line); border-radius: var(--radius); background: var(--sunken); }
+.manual > summary { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 12px 14px; cursor: pointer; list-style: none; }
+.manual > summary::-webkit-details-marker { display: none; }
+.manual > summary::before { content: '▸'; color: var(--muted); transition: transform .15s; display: inline-block; }
+.manual[open] > summary::before { transform: rotate(90deg); }
+.manual-title { font-size: 18px; font-weight: 600; }
+.manual-tag { font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; }
+.manual-count { font-size: 13px; color: var(--muted); }
+.manual-body { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 14px; }
+.manual-body > p:first-child { margin: 0; }
+.manual > p { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 62ch; }
+.layoutbox { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 9px 12px; border-radius: 0 5px 5px 0; font-size: 13.5px; }
+.layoutbox strong { display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+
+.rows { display: flex; flex-direction: column; gap: 8px; }
+.row { display: grid; gap: 6px; align-items: center; grid-template-columns: minmax(0, 1fr) auto; }
+.row .ftin, .row .withunit { min-width: 0; }
+.row.nearby { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto; }
+@media (max-width: 480px) { .row.nearby { grid-template-columns: minmax(0, 1fr) auto; } .row.nearby .ftin { grid-column: 1 / 2; } }
+.icon-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 5px; width: 32px; height: 32px; cursor: pointer; color: var(--muted); }
+.icon-btn:hover { color: var(--crit); border-color: var(--crit-line); }
+.add { align-self: flex-start; border: 1px dashed var(--steel); background: transparent; border-radius: 5px; padding: 5px 10px; font-size: 13px; cursor: pointer; color: var(--ink); }
+.add:hover { border-style: solid; }
+
+/* ---------- results ---------- */
+.results { min-width: 0; }
+.sheet {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px);
+  display: flex; flex-direction: column; gap: 16px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px;
+  max-height: calc(100vh - 24px); overflow: auto;
+}
+@media (max-width: 960px) { .sheet { position: static; max-height: none; } }
+.sheet h2 { margin: 0; font-size: 26px; font-weight: 700; }
+.sheet h3 { margin: 0 0 6px; font-size: 17px; font-weight: 600; letter-spacing: 0.02em; }
+.banner { border: 1px solid; border-radius: var(--radius); padding: 10px 12px; font-size: 14px; }
+.banner p { margin: 0; }
+.banner ul { margin: 6px 0 0; padding-left: 18px; }
+.banner.crit { background: var(--crit-bg); border-color: var(--crit-line); color: var(--ink); }
+.banner.crit strong { color: var(--crit); }
+.banner.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.banner.warn strong { color: var(--warn); }
+.banner.ok { border-color: var(--line); background: var(--sunken); }
+.banner.ok strong { color: var(--ok); }
+
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 0; }
+.figures div { background: var(--surface); padding: 9px 12px; min-width: 0; }
+.figures dt { font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.figures dd { margin: 2px 0 0; font-family: var(--font-display); font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.governing { margin: 0; font-size: 13.5px; color: var(--muted); }
+.governing b { color: var(--ink); font-weight: 600; }
+.offset-info { margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; font-size: 13.5px; color: var(--muted); }
+.offset-info b { color: var(--accent); font-weight: 600; }
+
+.split { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 560px) { .split { grid-template-columns: minmax(0, 1fr); } .diagram { max-width: 220px; } }
+.diagram svg { width: 100%; height: auto; display: block; }
+.diagram text { font: 10px var(--font-body); fill: var(--muted); }
+.diagram .lvl { stroke: var(--line); stroke-width: 1; }
+.diagram .lvl-roof { stroke: var(--steel); stroke-width: 1.5; }
+.diagram .req { stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.diagram .req-t { fill: var(--accent); font-weight: 600; }
+.diagram .pipe-edge { fill: none; stroke: var(--steel); stroke-linejoin: miter; stroke-linecap: butt; }
+.diagram .pipe-core { fill: none; stroke: var(--steel-hi); stroke-linejoin: miter; stroke-linecap: butt; }
+.diagram .jog-t { fill: var(--accent); font-weight: 600; }
+.diagram .cap { fill: var(--steel); }
+.diagram .unit { fill: var(--sunken); stroke: var(--steel); stroke-width: 1; }
+.diagram .conn { stroke: var(--steel); stroke-width: 2; stroke-dasharray: 3 3; fill: none; }
+.diagram .wall { fill: var(--line); }
+.diagram .axis { stroke: var(--line); }
+
+.parts-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.table-wrap { overflow-x: auto; }
+table.parts { width: 100%; border-collapse: collapse; font-size: 14px; }
+.parts th { text-align: left; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 4px 8px 6px; border-bottom: 1px solid var(--line); }
+.parts td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.parts td.qty { width: 40px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.parts td.pn { white-space: nowrap; font-family: var(--font-mono); font-size: 13px; }
+.parts td.pn small { display: block; color: var(--muted); font-size: 11px; }
+.parts .why { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.parts tr.zone td { padding: 12px 8px 4px; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; border-bottom: 0; }
+.chip { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); color: var(--muted); margin-left: 6px; vertical-align: 1px; }
+.copybox { width: 100%; min-height: 120px; font: 12px var(--font-mono); background: var(--sunken); border: 1px solid var(--line); border-radius: 5px; padding: 8px; }
+
+.list { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.list.notes { color: var(--muted); font-size: 13.5px; }
+details summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.checks { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.checks li { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 8px; }
+.tag { font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; text-align: center; border-radius: 3px; padding: 1px 0; align-self: start; }
+.tag.PASS { color: var(--ok); border: 1px solid var(--ok); }
+.tag.FAIL { color: var(--crit); border: 1px solid var(--crit); }
+.tag.INFO { color: var(--muted); border: 1px solid var(--line); }
+.fine { margin: 0; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+.loading { color: var(--muted); }
+.has-error input, .has-error select, input.has-error, select.has-error { border-color: var(--crit); box-shadow: 0 0 0 2px var(--crit-bg); }
+.seg.has-error, .rows.has-error { outline: 2px solid var(--crit); outline-offset: 2px; border-radius: var(--radius); }
+.field-error { margin: 0; display: flex; align-items: flex-start; font-size: 13px; color: var(--crit); font-weight: 500; }
+.field-error .ic { margin-top: 1px; }
+fieldset.section.section-error { border-color: var(--crit-line); }
+fieldset.section.section-error > legend { color: var(--crit); }
+.goto { margin-left: 6px; border: 0; background: none; padding: 0; color: var(--crit); text-decoration: underline; cursor: pointer; font: inherit; font-weight: 600; }
+.ic { width: 16px; height: 16px; flex: none; vertical-align: -3px; margin-right: 6px; }
+.ic-stop .ic-shape { fill: var(--crit); }
+.ic-caution .ic-shape { fill: var(--warn); }
+.ic-mark { fill: none; stroke: var(--ic-mark); stroke-width: 2.2; stroke-linecap: round; }
+.bhead { display: flex; align-items: flex-start; gap: 2px; flex-wrap: wrap; }
+.bhead .ic { margin-top: 2px; }
+#warnings li { display: flex; align-items: flex-start; list-style: none; margin-left: -18px; }
+#warnings li .ic { margin-top: 2px; }
+.parts .flag { display: block; font-size: 12.5px; margin-top: 3px; padding-left: 8px; border-left: 2px solid; }
+.parts .flag.stop { color: var(--crit); border-color: var(--crit); }
+.parts .flag.caution { color: var(--warn); border-color: var(--warn); }
+.parts tr.row-stop td { background: var(--crit-bg); }
+.head-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.jog { gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.offsets { display: flex; flex-direction: column; gap: 8px; }
+.row .offset-n { font-size: 13px; font-weight: 600; white-space: nowrap; }
+.row.offset { grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto; align-items: end; }
+.row.offset .offset-n { padding-bottom: 8px; }
+.row.offset select { min-width: 0; width: 100%; }
+.offset-calc { grid-column: 1 / -1; margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.offset-calc b { color: var(--ink); font-weight: 600; }
+.offset-calc b.short { color: var(--crit); }
+.mini { display: flex; flex-direction: column; gap: 3px; min-width: 0; font-size: 12px; color: var(--muted); }
+@media (max-width: 560px) {
+  .row.offset { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+  .row.offset .offset-n { grid-column: 1 / -1; padding-bottom: 0; }
+}
+.notice { margin: 0; font-size: 13.5px; color: var(--muted); border-left: 3px solid var(--steel); padding: 4px 0 4px 10px; }
+.roofheight { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+.sketch { margin: 0; max-width: 360px; }
+.sketch svg { width: 100%; height: auto; display: block; }
+.sketch figcaption { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.sk-floor { stroke: var(--steel); stroke-width: 1.5; }
+.sk-wall { fill: var(--line); }
+.sk-roof { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+.sk-pipe { fill: var(--steel-hi); stroke: var(--steel); }
+.sk-cap { fill: var(--steel); }
+.sk-dim, .sk-tick { stroke: var(--muted); stroke-width: 1; }
+.sk-res, .sk-tick-r { stroke: var(--accent); stroke-width: 1.5; }
+.sk-res { stroke-dasharray: 4 3; }
+.sk-t { font: 10px var(--font-body); fill: var(--muted); }
+.sk-k { font: 600 13px var(--font-body); fill: var(--ink); }
+.sk-r { font: 600 10.5px var(--font-body); fill: var(--accent); }
+.sk-deck { fill: var(--line); stroke: var(--ink); stroke-width: 1; }
+.sk-joist { fill: var(--steel-hi); stroke: var(--steel); }
+.sk-dw { fill: var(--steel); }
+.sk-center { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 6 3 2 3; }
+svg [hidden] { display: none; }
+.measure-rules { font-size: 13.5px; border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; }
+.measure-rules ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); }
+.measure-rules li b { color: var(--ink); font-weight: 600; }
+.computed { margin: 0; font-size: 14px; }
+.computed b { font-family: var(--font-display); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.computed.missing { color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .sheet { transition: border-color .2s; } }
+</style>
+
+<header class="top">
+  <div class="brand">
+    <h1>Duravent <span>DuraTech</span> chimney planner</h1>
+    <p>5"–8" all-fuel chimney · parts from catalog DV_DT_CT-001E (Aug 2026)</p>
+  </div>
+  <div class="head-btns">
+    <button class="btn" type="button" id="themeToggle" aria-pressed="false">Dark mode</button>
+    <button class="btn" type="button" id="clearForm">Clear the form</button>
+    <button class="btn" type="button" id="reset">Load the example</button>
+  </div>
+</header>
+
+<main class="layout">
+  <form class="form" id="q" novalidate>
+    <div class="example" id="exampleNote">
+      <span>These answers are an example: a one-story ranch with a wood stove. Replace them with your own measurements.</span>
+    </div>
+    <div class="measure-rules">
+      <b>How to measure</b>
+      <ul>
+        <li><b>Heights</b> start at the floor the stove or fireplace stands on.</li>
+        <li><b>Positions</b> are at the chimney's center: the middle of where the hole will be.</li>
+        <li><b>One exception:</b> the distance to the ridge is measured from the chimney's uphill (higher) side, because that is where the roof is closest to the top of the chimney.</li>
+      </ul>
+    </div>
+
+    <!-- 1. Appliance -->
+    <fieldset class="section">
+      <legend><b>1</b> Appliance Information</legend>
+      <div class="body">
+        <div class="seg" role="radiogroup" aria-label="Appliance type">
+          <label><input type="radio" name="appliance.kind" id="kind-stove" value="STOVE"><span>Wood stove</span></label>
+          <label><input type="radio" name="appliance.kind" id="kind-fp" value="FIREPLACE"><span>Factory-built fireplace</span></label>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="appliance-label">Make and model <span class="unit">(optional)</span></label>
+            <input type="text" id="appliance-label" name="appliance.label" placeholder="e.g. Enviro Boston 1200">
+          </div>
+          <div class="field">
+            <label for="appliance-collar">Flue collar size</label>
+            <select id="appliance-collar" name="appliance.collar">
+              <option value="" disabled>Choose…</option><option value="5">5"</option><option value="6">6"</option><option value="7">7"</option><option value="8">8"</option>
+            </select>
+            <p class="hint">The chimney must match it.</p>
+          </div>
+          <div class="field">
+            <label for="appliance-outletFt">Height of Flue Collar from floor</label>
+            <div class="ftin">
+              <input type="number" id="appliance-outletFt" name="appliance.outletFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+              <input type="number" id="appliance-outletIn" name="appliance.outletIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+            </div>
+            <p class="hint" data-when="appliance.kind=STOVE">Stove height with legs or pedestal.</p>
+            <p class="hint" data-when="appliance.kind=FIREPLACE">Top of the fireplace unit.</p>
+          </div>
+          <div class="field" data-when="appliance.kind=FIREPLACE">
+            <label for="appliance-connection">How the chimney attaches</label>
+            <select id="appliance-connection" name="appliance.connection">
+              <option value="ANCHOR_PLATE">Anchor plate</option>
+              <option value="ANCHOR_PLATE_DAMPER">Anchor plate with damper</option>
+              <option value="DIRECT">Directly onto the fireplace collar</option>
+            </select>
+          </div>
+        </div>
+
+        <details class="manual" id="manualBox">
+          <summary>
+            <span class="manual-title">From your manual</span>
+            <span class="manual-tag">Optional</span>
+            <span class="manual-count" id="manualCount"></span>
+          </summary>
+          <div class="manual-body">
+          <p>Look in the venting or chimney section of the installation manual. Leave anything blank that the manual doesn't state. Where the manual and Duravent differ, the planner uses the stricter value.</p>
+          <div class="grid">
+            <div class="field">
+              <label for="appliance-minHeightFt">Minimum chimney height</label>
+              <div class="withunit"><input type="number" id="appliance-minHeightFt" name="appliance.minHeightFt" min="0" step="0.1" inputmode="decimal"><span class="unit">ft</span></div>
+              <p class="hint">Measured from the top of the flue collar to the top of the chimney.</p>
+            </div>
+            <div class="field">
+              <label for="appliance-maxHeightFt">Maximum chimney height</label>
+              <div class="withunit"><input type="number" id="appliance-maxHeightFt" name="appliance.maxHeightFt" min="0" step="0.1" inputmode="decimal"><span class="unit">ft</span></div>
+            </div>
+          </div>
+          <div class="layoutbox" id="layoutPrompt">
+            <strong>Your layout</strong>
+            <span id="layoutText">Fill in the installation below.</span>
+            <p class="hint" style="margin-top:4px">Many manuals have a height table by number of elbows, tees, horizontal run and elevation. Find the row that matches and enter its minimum height above.</p>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label for="appliance-maxOffsets">Most offsets allowed</label>
+              <select id="appliance-maxOffsets" name="appliance.maxOffsets">
+                <option value="">Not stated</option><option value="0">None</option><option value="1">1</option><option value="2">2</option>
+              </select>
+              <p class="hint">An offset is a pair of elbows around framing. DuraTech allows 2.</p>
+            </div>
+            <div class="field" data-when="appliance.kind=STOVE">
+              <label for="appliance-minRiseIn">Vertical rise before a horizontal run</label>
+              <div class="withunit"><input type="number" id="appliance-minRiseIn" name="appliance.minRiseIn" min="0" step="1" inputmode="decimal"><span class="unit">in</span></div>
+              <p class="hint">Often a note on rear or wall venting, e.g. "min. 24 in vertical rise".</p>
+            </div>
+            <div class="field" data-when="appliance.kind=STOVE">
+              <label for="appliance-minCeilingIn">Horizontal pipe to ceiling, at least</label>
+              <div class="withunit"><input type="number" id="appliance-minCeilingIn" name="appliance.minCeilingIn" min="0" step="1" inputmode="decimal"><span class="unit">in</span></div>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" id="appliance-only15" name="appliance.only15"> Only 15° elbows are allowed</label>
+          <label class="check"><input type="checkbox" id="appliance-roofShield" name="appliance.roofShield"> A roof radiation shield is required</label>
+          </div>
+        </details>
+      </div>
+    </fieldset>
+
+    <!-- 2. Route -->
+    <fieldset class="section">
+      <legend><b>2</b> Chimney Configuration</legend>
+      <div class="body">
+        <div class="seg" role="radiogroup" aria-label="Route" data-when="appliance.kind=STOVE">
+          <label><input type="radio" name="route" id="route-ceiling" value="CEILING"><span>Up through the ceiling</span></label>
+          <label><input type="radio" name="route" id="route-wall" value="WALL"><span>Out through a wall</span></label>
+        </div>
+
+        <!-- ceiling -->
+        <div class="body" style="padding:0" data-when="appliance.kind=STOVE;route=CEILING">
+          <div class="seg" role="radiogroup" aria-label="Ceiling style">
+            <label><input type="radio" name="ceiling.style" id="ceiling-flat" value="FLAT"><span>Flat ceiling</span></label>
+            <label><input type="radio" name="ceiling.style" id="ceiling-cath" value="CATHEDRAL"><span>Cathedral or vaulted</span></label>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label for="ceiling-ft">Ceiling height where stove will be installed</label>
+              <div class="ftin">
+                <input type="number" id="ceiling-ft" name="ceiling.ft" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="ceiling-in" name="ceiling.in" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+            </div>
+            <div class="field" data-when="ceiling.style=CATHEDRAL">
+              <label for="ceiling-pitch">Ceiling pitch</label>
+              <select id="ceiling-pitch" name="ceiling.pitch" data-options="pitch"></select>
+            </div>
+            <div class="field" data-when="ceiling.style=FLAT">
+              <label for="ceiling-support">Ceiling support</label>
+              <select id="ceiling-support" name="ceiling.support">
+                <option value="SQUARE">Square support box</option>
+                <option value="SQUARE_COLLAR">Square box with attic collar (6" only)</option>
+                <option value="ROUND">Round support box</option>
+                <option value="FLAT_UNPAINTED">Unpainted box (mechanical room)</option>
+              </select>
+            </div>
+            <div class="field" data-when="ceiling.style=FLAT;ceiling.support=ROUND">
+              <label for="ceiling-roundTrim">Trim collar</label>
+              <select id="ceiling-roundTrim" name="ceiling.roundTrim"><option value="ROUND">Round</option><option value="SQUARE">Square</option></select>
+            </div>
+          </div>
+          <div class="field" data-when="ceiling.style=FLAT">
+            <label for="ceiling-above">What's above this ceiling?</label>
+            <select id="ceiling-above" name="ceiling.above">
+              <option value="ATTIC">An attic, then the roof</option>
+              <option value="STORY_ATTIC">A second floor, then an attic</option>
+              <option value="STORY_ROOF">A second floor with a vaulted ceiling under the roof</option>
+              <option value="ROOF">The roof directly (no attic)</option>
+            </select>
+          </div>
+          <div class="grid" data-when="ceiling.style=FLAT;ceiling.above=STORY_ATTIC|STORY_ROOF">
+            <div class="field">
+              <label for="ceiling-storyFt">Second-floor ceiling height</label>
+              <div class="ftin">
+                <input type="number" id="ceiling-storyFt" name="ceiling.storyFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="ceiling-storyIn" name="ceiling.storyIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+              <p class="hint" data-when="ceiling.above=STORY_ATTIC">Measured in the second-floor room, from its floor to its ceiling where the chimney passes.</p>
+              <p class="hint" data-when="ceiling.above=STORY_ROOF">Not needed for the parts list: the chimney goes from this room straight out the roof.</p>
+            </div>
+            <div class="field" data-when="ceiling.above=STORY_ATTIC">
+              <label for="ceiling-floorThickIn">Floor thickness between the stories</label>
+              <div class="withunit"><input type="number" id="ceiling-floorThickIn" name="ceiling.floorThickIn" min="0" step="0.5" inputmode="decimal"><span class="unit">in</span></div>
+              <p class="hint">From the stove room's ceiling to the second floor's surface. Usually 10"–14".</p>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" id="ceiling-reduced" name="ceiling.reduced"> Joists are 12" on center (reduced-clearance box, 6" only)</label>
+          <div class="field">
+            <span class="label">Where it comes out</span>
+            <div class="seg" role="radiogroup" aria-label="Where the chimney comes out">
+              <label><input type="radio" name="ceiling.exit" id="ceiling-exit-roof" value="ROOF"><span>Through the roof</span></label>
+              <label><input type="radio" name="ceiling.exit" id="ceiling-exit-chase" value="CHASE"><span>Out the top of a chase on the roof</span></label>
+            </div>
+            <p class="hint">A chase is a framed box around the chimney above the roof. The roofer flashes the chase, so no roof flashing is needed.</p>
+          </div>
+          <div class="field jog">
+            <span class="label">Does the chimney go straight up?</span>
+            <div class="seg" role="radiogroup" aria-label="Straight up or offset">
+              <label><input type="radio" name="ceiling.jog" id="ceiling-jog-straight" value="STRAIGHT"><span>Straight up</span></label>
+              <label><input type="radio" name="ceiling.jog" id="ceiling-jog-offset" value="OFFSET"><span>It needs an offset</span></label>
+            </div>
+            <p class="hint">An offset is a pair of elbows that shifts the chimney sideways to clear a joist, rafter or ridge beam. DuraTech allows up to 2. The shifts listed are the ones Duravent's elbow chart makes, so pick the one at or just above the shift you need; a smaller shift than the chart's smallest can't be built.</p>
+            <div class="offsets" data-when="ceiling.jog=OFFSET">
+              <div class="rows" data-list="ceiling.offsets" data-kind="offset"></div>
+              <p class="hint">Height available is the vertical room where the jog happens, for example from the top of the ceiling joists to the underside of the rafters. With Auto, the planner uses 15° elbows if they fit and 30° if not. The line under each offset shows the shift, the height it takes and what's left over.</p>
+              <button class="add" type="button" data-add="ceiling.offsets">Add a second offset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- wall -->
+        <div class="body" style="padding:0" data-when="appliance.kind=STOVE;route=WALL">
+          <div class="grid">
+            <div class="field">
+              <label for="wall-thickness">Wall thickness</label>
+              <div class="withunit"><input type="number" id="wall-thickness" name="wall.thickness" min="0" step="0.25" inputmode="decimal"><span class="unit">in</span></div>
+              <p class="hint">Whole wall: drywall, framing, sheathing and siding or brick veneer with its air gap.</p>
+            </div>
+            <div class="field">
+              <label for="wall-cladding">Outside wall finish</label>
+              <select id="wall-cladding" name="wall.cladding">
+                <option value="VINYL">Vinyl siding</option><option value="WOOD">Wood siding</option><option value="FIBER_CEMENT">Fiber-cement siding</option>
+                <option value="BRICK">Brick veneer</option><option value="STONE">Stone veneer</option><option value="STUCCO">Stucco</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="wall-thimble">Wall thimble</label>
+              <select id="wall-thimble" name="wall.thimble"><option value="STANDARD">Standard</option><option value="INSULATED">Insulated</option></select>
+            </div>
+            <div class="field">
+              <label for="wall-centerFt">Center of the wall opening, above the floor</label>
+              <div class="ftin">
+                <input type="number" id="wall-centerFt" name="wall.centerFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="wall-centerIn" name="wall.centerIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="wall-collarToWall">Flue collar to the wall</label>
+              <div class="withunit"><input type="number" id="wall-collarToWall" name="wall.collarToWall" min="0" step="0.5" inputmode="decimal"><span class="unit">in</span></div>
+              <p class="hint">Level distance from the collar's center to the inside wall. Counts as horizontal run.</p>
+            </div>
+            <div class="field">
+              <label for="wall-standoff">Chimney to outside wall</label>
+              <div class="withunit"><input type="number" id="wall-standoff" name="wall.standoff" min="2" max="6" step="0.5" inputmode="decimal"><span class="unit">in</span></div>
+              <p class="hint">2"–6", set by the tee support.</p>
+            </div>
+            <div class="field">
+              <label for="wall-roomCeilingFt">Room ceiling height</label>
+              <div class="ftin">
+                <input type="number" id="wall-roomCeilingFt" name="wall.roomCeilingFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="wall-roomCeilingIn" name="wall.roomCeilingIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="wall-topFt">Top of the outside wall</label>
+              <div class="ftin">
+                <input type="number" id="wall-topFt" name="wall.topFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="wall-topIn" name="wall.topIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+              <p class="hint">Highest point a wall strap can attach, usually the eave.</p>
+            </div>
+            <div class="field">
+              <label for="wall-eave">Above the wall</label>
+              <select id="wall-eave" name="wall.eave">
+                <option value="NONE">Gable end, or the chimney clears the eave</option>
+                <option value="THROUGH_OVERHANG">Chimney goes through the roof overhang</option>
+                <option value="CHASE">The outside run is enclosed in a chase</option>
+              </select>
+            </div>
+          </div>
+          <p class="notice">Offsets on a through-the-wall chimney, for example to get around an eave, aren't supported yet. The planner runs the chimney straight up the outside wall.</p>
+        </div>
+
+        <!-- fireplace -->
+        <div class="body" style="padding:0" data-when="appliance.kind=FIREPLACE">
+          <div class="seg" role="radiogroup" aria-label="Fireplace chimney exit">
+            <label><input type="radio" name="fireplace.exit" id="fp-chase" value="CHASE"><span>Out the top of a chase</span></label>
+            <label><input type="radio" name="fireplace.exit" id="fp-roof" value="ROOF"><span>Through the roof</span></label>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label for="fireplace-shield">Shield at each floor or ceiling</label>
+              <select id="fireplace-shield" name="fireplace.shield">
+                <option value="FIRESTOP">Firestop radiation shield</option>
+                <option value="PASS_THROUGH">Pass-through radiation shield (6"–8")</option>
+              </select>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" id="fireplace-attic" name="fireplace.attic"> The chimney passes through an attic</label>
+          <div class="field jog">
+            <span class="label">Does the chimney go straight up?</span>
+            <div class="seg" role="radiogroup" aria-label="Straight up or offset">
+              <label><input type="radio" name="fireplace.jog" id="fireplace-jog-straight" value="STRAIGHT"><span>Straight up</span></label>
+              <label><input type="radio" name="fireplace.jog" id="fireplace-jog-offset" value="OFFSET"><span>It needs an offset</span></label>
+            </div>
+            <p class="hint">An offset is a pair of elbows that shifts the chimney sideways to clear framing in the chase or a rafter. DuraTech allows up to 2. The shifts listed are the ones Duravent's elbow chart makes, so pick the one at or just above the shift you need; a smaller shift than the chart's smallest can't be built.</p>
+            <div class="offsets" data-when="fireplace.jog=OFFSET">
+              <div class="rows" data-list="fireplace.offsets" data-kind="offset"></div>
+              <p class="hint">Height available is the vertical room where the jog happens, for example from the top of the ceiling joists to the underside of the rafters. With Auto, the planner uses 15° elbows if they fit and 30° if not. The line under each offset shows the shift, the height it takes and what's left over.</p>
+              <button class="add" type="button" data-add="fireplace.offsets">Add a second offset</button>
+            </div>
+          </div>
+          <div class="field">
+            <span class="label">Floors or ceilings the chimney passes through</span>
+            <p class="hint">Height of each above the fireplace's floor.</p>
+            <div class="rows" data-list="fireplace.floors" data-kind="height"></div>
+            <button class="add" type="button" data-add="fireplace.floors">Add a floor or ceiling</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- shared chase -->
+    <fieldset class="section" data-when="appliance.kind=FIREPLACE;fireplace.exit=CHASE||appliance.kind=STOVE;route=CEILING;ceiling.exit=CHASE||appliance.kind=STOVE;route=WALL;wall.eave=CHASE">
+      <legend><b>2b</b> Chase Information</legend>
+      <div class="body">
+        <div class="grid">
+          <div class="field">
+            <label for="chase-topFt">Top of the chase, above the floor</label>
+            <div class="ftin">
+              <input type="number" id="chase-topFt" name="chase.topFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+              <input type="number" id="chase-topIn" name="chase.topIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+            </div>
+            <p class="hint">From the floor the appliance stands on up to the top of the chase framing. A chase built on the roof starts at the roof, so its top is higher than the roof height in section 4.</p>
+          </div>
+          <div class="field">
+            <label for="chase-widthIn">Chase top, outside width</label>
+            <div class="withunit"><input type="number" id="chase-widthIn" name="chase.widthIn" min="0" step="0.25" inputmode="decimal"><span class="unit">in</span></div>
+          </div>
+          <div class="field">
+            <label for="chase-depthIn">Chase top, outside depth</label>
+            <div class="withunit"><input type="number" id="chase-depthIn" name="chase.depthIn" min="0" step="0.25" inputmode="decimal"><span class="unit">in</span></div>
+          </div>
+        </div>
+        <p class="hint">Duravent's chase top flashing is a square of about 18¾" to 21¾", depending on chimney size. A bigger chase needs a cover made by a sheet-metal shop; the parts list will say so.</p>
+        <div class="grid">
+          <div class="field">
+            <label for="chase-topRule">How high the chimney goes above the chase top</label>
+            <select id="chase-topRule" name="chase.topRule">
+              <option value="CODE">3 ft above the chase top (3-2-10 rule)</option>
+              <option value="TWO_FT">2 ft above the chase top</option>
+              <option value="SET">A height I set (6" minimum)</option>
+            </select>
+            <p class="hint">Use what your inspector or plans call for. Duravent requires at least 6" from the chase top flashing to the bottom of the cap under every choice, and the roof and anything within 10 ft are always checked too.</p>
+          </div>
+          <div class="field" data-when="chase.topRule=SET">
+            <label for="chase-aboveIn">Chase top to bottom of the cap</label>
+            <div class="withunit"><input type="number" id="chase-aboveIn" name="chase.aboveIn" min="6" step="0.25" inputmode="decimal"><span class="unit">in</span></div>
+            <p class="hint">6" or more. The planner rounds up to whole pipe sections, never down.</p>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="chase-airIntake" name="chase.airIntake"> Add a chase air intake</label>
+        <label class="check"><input type="checkbox" id="chase-shroud" name="chase.shroud"> A decorative shroud will cover the top</label>
+      </div>
+    </fieldset>
+
+    <!-- 3. Attic -->
+    <fieldset class="section" data-when="appliance.kind=STOVE;route=CEILING;ceiling.style=FLAT;ceiling.above=ATTIC|STORY_ATTIC">
+      <legend><b>3</b> Attic Information</legend>
+      <div class="body">
+        <p class="hint">The attic is where the chimney gets its attic insulation shield and where an offset usually goes, so the planner needs to know how much open space is up there. Measure in the attic, directly above where the chimney's center will be.</p>
+        <div class="field">
+          <span class="label">Where your tape measure starts</span>
+          <div class="seg" role="radiogroup" aria-label="Where the attic measurement starts">
+            <label><input type="radio" name="attic.from" id="attic-from-joists" value="JOISTS"><span>Top of the ceiling joists</span></label>
+            <label><input type="radio" name="attic.from" id="attic-from-drywall" value="DRYWALL"><span>Top of the drywall, between joists</span></label>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="attic-ft">C · Attic height at the chimney's center</label>
+            <div class="ftin">
+              <input type="number" id="attic-ft" name="attic.ft" min="0" step="1" inputmode="decimal"><span>ft</span>
+              <input type="number" id="attic-in" name="attic.in" min="0" step="0.25" inputmode="decimal"><span>in</span>
+            </div>
+            <p class="hint" id="atticHint">Straight up to the underside of the roof boards (sheathing), not to the bottom of a rafter.</p>
+          </div>
+          <div class="field" data-when="attic.from=JOISTS">
+            <label for="attic-joistIn">J · Ceiling joist depth</label>
+            <div class="withunit"><input type="number" id="attic-joistIn" name="attic.joistIn" min="0" step="0.25" inputmode="decimal"><span class="unit">in</span></div>
+            <p class="hint">Actual size: 2×6 = 5½", 2×8 = 7¼", 2×10 = 9¼", 2×12 = 11¼".</p>
+          </div>
+          <div class="field">
+            <label for="attic-drywallIn">D · Ceiling drywall</label>
+            <div class="withunit"><input type="number" id="attic-drywallIn" name="attic.drywallIn" min="0" step="0.125" inputmode="decimal"><span class="unit">in</span></div>
+            <p class="hint">Usually ½" or ⅝". Plaster ceilings run about ¾"–1".</p>
+          </div>
+        </div>
+        <figure class="sketch">
+          <svg viewBox="0 0 300 165" role="img" aria-label="Sketch: attic height measured at the chimney's center, from the top of the joists or the top of the drywall to the underside of the roof boards">
+            <polygon class="sk-deck" points="10,76 290,6 290,0 10,70"/>
+            <text class="sk-t" x="170" y="50">underside of roof boards</text>
+            <rect class="sk-joist" x="40" y="106" width="8" height="24"/>
+            <rect class="sk-joist" x="100" y="106" width="8" height="24"/>
+            <rect class="sk-joist" x="190" y="106" width="8" height="24"/>
+            <rect class="sk-joist" x="250" y="106" width="8" height="24"/>
+            <rect class="sk-dw" x="10" y="130" width="280" height="4"/>
+            <line class="sk-center" x1="149" y1="30" x2="149" y2="150"/>
+            <text class="sk-t" x="149" y="160" text-anchor="middle">chimney center</text>
+            <g data-when="attic.from=JOISTS">
+              <line class="sk-dim" x1="108" y1="106" x2="149" y2="106" stroke-dasharray="2 2"/>
+              <line class="sk-res" x1="149" y1="106" x2="149" y2="42"/>
+              <line class="sk-tick-r" x1="143" y1="106" x2="155" y2="106"/>
+              <text class="sk-t" x="58" y="100">top of joists</text>
+              <line class="sk-dim" x1="34" y1="106" x2="34" y2="130"/>
+              <text class="sk-k" x="29" y="122" text-anchor="end">J</text>
+            </g>
+            <g data-when="attic.from=DRYWALL">
+              <line class="sk-res" x1="149" y1="130" x2="149" y2="42"/>
+              <line class="sk-tick-r" x1="143" y1="130" x2="155" y2="130"/>
+              <text class="sk-t" x="160" y="100">top of drywall</text>
+              <line class="sk-dim" x1="163" y1="103" x2="153" y2="127"/>
+            </g>
+            <line class="sk-tick-r" x1="143" y1="42" x2="155" y2="42"/>
+            <text class="sk-k" x="156" y="86">C</text>
+            <line class="sk-dim" x1="268" y1="130" x2="268" y2="134"/>
+            <text class="sk-k" x="276" y="146" text-anchor="middle">D</text>
+            <text class="sk-t" x="12" y="148">ceiling below</text>
+          </svg>
+          <figcaption id="atticCaption"></figcaption>
+        </figure>
+        <p class="computed" id="atticComputed"></p>
+      </div>
+    </fieldset>
+
+    <!-- 4. Roof -->
+    <fieldset class="section">
+      <legend><b>4</b> Roof Information</legend>
+      <div class="body">
+        <div class="grid">
+          <div class="field">
+            <label for="roof-pitch">Roof pitch</label>
+            <select id="roof-pitch" name="roof.pitch" data-options="pitch"></select>
+            <p class="hint">Rise in inches per 12" of level run.</p>
+          </div>
+          <div class="field">
+            <label for="roof-surface">Roof surface</label>
+            <select id="roof-surface" name="roof.surface">
+              <option value="SHINGLE">Shingles</option><option value="METAL_CORRUGATED">Corrugated metal</option><option value="TILE">Clay or concrete tile</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="roof-ridgeFt">Level distance to the ridge</label>
+            <div class="withunit"><input type="number" id="roof-ridgeFt" name="roof.ridgeFt" min="0" step="0.5" inputmode="decimal"><span class="unit">ft</span></div>
+            <p class="hint">Measured level from the chimney's <b>uphill (higher) side</b>, its outer wall, to the ridge. Leave blank if more than 10 ft.</p>
+          </div>
+        </div>
+        <div class="roofheight">
+          <div class="field">
+            <span class="label" id="roofHeightLabel">Height of the roof where the chimney comes out</span>
+            <p class="hint" id="roofHeightHint">The chimney's height is measured from this spot, so the planner needs to know how high it is.</p>
+            <div class="seg" role="radiogroup" aria-label="How to give the roof height">
+              <label><input type="radio" name="roof.method" id="roof-method-eave" value="EAVE"><span>Measure from the eave</span></label>
+              <label data-when="appliance.kind=STOVE;route=CEILING;ceiling.style=FLAT;ceiling.above=ATTIC|STORY_ATTIC"><input type="radio" name="roof.method" id="roof-method-attic" value="ATTIC"><span>Use my attic measurements</span></label>
+              <label><input type="radio" name="roof.method" id="roof-method-direct" value="DIRECT"><span>I know the height</span></label>
+            </div>
+          </div>
+          <div class="grid" data-when="roof.method=EAVE">
+            <div class="field">
+              <label for="roof-eaveFt">A · Height of the roof's lower edge</label>
+              <div class="ftin">
+                <input type="number" id="roof-eaveFt" name="roof.eaveFt" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="roof-eaveIn" name="roof.eaveIn" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+              <p class="hint">From the stove's floor level up to the top of the roof edge (the eave). Outside, measure from the ground and adjust for how far the floor sits above it.</p>
+            </div>
+            <div class="field">
+              <label for="roof-fromEaveFt">B · Level distance from that edge to the chimney</label>
+              <div class="withunit"><input type="number" id="roof-fromEaveFt" name="roof.fromEaveFt" min="0" step="0.25" inputmode="decimal"><span class="unit">ft</span></div>
+              <p class="hint">Measure on the ground, from below the roof edge to below the chimney's center. Include the overhang.</p>
+            </div>
+          </div>
+          <div class="grid" data-when="roof.method=ATTIC;appliance.kind=STOVE;route=CEILING;ceiling.style=FLAT;ceiling.above=ATTIC|STORY_ATTIC">
+            <div class="field">
+              <label for="attic-deckIn">Roof boards and roofing</label>
+              <div class="withunit"><input type="number" id="attic-deckIn" name="attic.deckIn" min="0" step="0.25" inputmode="decimal"><span class="unit">in</span></div>
+              <p class="hint">Sheathing plus roofing, usually about 1" for shingles. Added to the attic measurements in section 3 to reach the top of the roof.</p>
+            </div>
+          </div>
+          <div class="grid" data-when="roof.method=DIRECT">
+            <div class="field">
+              <label for="roof-ft">Roof height at the chimney</label>
+              <div class="ftin">
+                <input type="number" id="roof-ft" name="roof.ft" min="0" step="1" inputmode="decimal"><span>ft</span>
+                <input type="number" id="roof-in" name="roof.in" min="0" step="0.25" inputmode="decimal"><span>in</span>
+              </div>
+              <p class="hint">From the stove's floor straight up to the top of the roofing at the chimney's center.</p>
+            </div>
+          </div>
+          <figure class="sketch">
+            <svg viewBox="0 0 300 150" role="img" aria-label="Sketch: roof height at the chimney equals the eave height A plus the level distance B times the pitch">
+              <line class="sk-floor" x1="6" y1="138" x2="294" y2="138"/>
+              <text class="sk-t" x="290" y="133" text-anchor="end">stove's floor</text>
+              <rect class="sk-wall" x="44" y="74" width="7" height="64"/>
+              <polyline class="sk-roof" points="26,72 156,7 286,72"/>
+              <rect class="sk-pipe" x="111" y="10" width="12" height="24"/>
+              <rect class="sk-cap" x="107" y="5" width="20" height="5"/>
+              <line class="sk-dim" x1="26" y1="138" x2="26" y2="73"/>
+              <text class="sk-k" x="20" y="108" text-anchor="end">A</text>
+              <line class="sk-dim" x1="26" y1="92" x2="117" y2="92"/>
+              <line class="sk-tick" x1="117" y1="87" x2="117" y2="97"/>
+              <text class="sk-k" x="72" y="87" text-anchor="middle">B</text>
+              <line class="sk-res" x1="137" y1="138" x2="137" y2="32"/>
+              <line class="sk-tick-r" x1="132" y1="32" x2="142" y2="32"/>
+              <text class="sk-r" x="143" y="80">roof height</text>
+              <text class="sk-r" x="143" y="92">at the chimney</text>
+            </svg>
+            <figcaption>Roof height = A + B × pitch. On a 6/12 roof, every foot of B adds 6".</figcaption>
+          </figure>
+          <p class="computed" id="roofComputed"></p>
+        </div>
+        <div class="field">
+          <span class="label">Anything else within 10 ft of the chimney</span>
+          <p class="hint">A dormer, an upper roof, a gable edge. The chimney must be 2 ft higher than each.</p>
+          <div class="rows" data-list="nearby" data-kind="nearby"></div>
+          <button class="add" type="button" data-add="nearby">Add a nearby structure</button>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 4. Options -->
+    <fieldset class="section">
+      <legend><b>5</b> Chimney Options</legend>
+      <div class="body">
+        <div class="grid">
+          <div class="field">
+            <label for="chimney-finish">Outer wall</label>
+            <select id="chimney-finish" name="chimney.finish"><option value="SS">Stainless steel</option><option value="GA">Galvalume (6"–8")</option></select>
+          </div>
+          <div class="field">
+            <label for="chimney-connector">Stovepipe below the ceiling</label>
+            <select id="chimney-connector" name="chimney.connector"><option value="DB">DuraBlack single-wall</option><option value="DVL">DVL double-wall</option></select>
+            <p class="hint">Sets the cathedral support box height.</p>
+          </div>
+          <div class="field">
+            <span class="label">Site elevation</span>
+            <label class="check"><input type="checkbox" id="chimney-highAltitude" name="chimney.highAltitude"> 2,000 ft or more above sea level</label>
+            <p class="hint">Thinner air draws less, so high-altitude chimneys usually need to be taller. Below 2,000 ft, leave this unticked.</p>
+            <div class="withunit" data-when="chimney.highAltitude=true"><input type="number" id="chimney-siteElevationFt" name="chimney.siteElevationFt" min="0" step="50" inputmode="decimal" aria-label="Site elevation above sea level"><span class="unit">ft</span></div>
+          </div>
+          <div class="field">
+            <label for="chimney-cap">Cap</label>
+            <select id="chimney-cap" name="chimney.cap"><option value="STANDARD">Standard cap</option><option value="DIKAPT">DIKAPT anti-downdraft cap</option></select>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="chimney-sparkArrestor" name="chimney.sparkArrestor"> Add a spark arrestor</label>
+        <label class="check"><input type="checkbox" id="chimney-lockingBands" name="chimney.lockingBands"> Add locking bands at every joint (optional)</label>
+      </div>
+    </fieldset>
+  </form>
+
+  <aside class="results" aria-live="polite">
+    <div class="sheet" id="sheet">
+      <h2>Parts list</h2>
+      <div id="status"><p class="loading">Loading the catalog…</p></div>
+      <div id="summary" hidden>
+        <dl class="figures" id="figures"></dl>
+        <p class="governing" id="governing"></p>
+        <ul class="offset-info" id="offsetInfo" hidden></ul>
+      </div>
+      <div class="split" id="partsArea" hidden>
+        <div class="diagram" id="diagram" aria-label="Side view of heights, to scale"></div>
+        <div style="min-width:0">
+          <div class="parts-head">
+            <h3 id="partsCount">Parts</h3>
+            <span class="head-btns">
+              <button class="btn" type="button" id="copy">Copy list</button>
+              <button class="btn primary" type="button" id="csv">Download CSV</button>
+            </span>
+          </div>
+          <div class="table-wrap"><table class="parts" id="parts"></table></div>
+          <textarea class="copybox" id="copyFallback" hidden readonly aria-label="Parts list to copy"></textarea>
+        </div>
+      </div>
+      <div id="warnBlock" hidden><h3>Check these</h3><ul class="list" id="warnings"></ul></div>
+      <div id="noteBlock" hidden><h3>Installation notes</h3><ul class="list notes" id="notes"></ul></div>
+      <details id="checkBlock" hidden><summary>Rules applied</summary><ul class="checks" id="checks"></ul></details>
+      <p class="fine">A planning aid, not an installation approval. Follow the Duravent installation instructions and your appliance manual, check local code, and have the finished chimney inspected by a certified professional.</p>
+    </div>
+  </aside>
+</main>
+
+<script type="module" src="js/app.js"></script>

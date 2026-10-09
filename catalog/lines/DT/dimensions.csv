@@ -1,0 +1,531 @@
+order_number,label,value_in,value_text,meaning
+6DT-06,A,6,,inner diameter
+6DT-06,B,8,,outer diameter
+6DT-06B,A,6,,inner diameter
+6DT-06B,B,8,,outer diameter
+6DT-06SS,A,6,,inner diameter
+6DT-06SS,B,8,,outer diameter
+6DT-09,A,6,,inner diameter
+6DT-09,B,8,,outer diameter
+6DT-09B,A,6,,inner diameter
+6DT-09B,B,8,,outer diameter
+6DT-09SS,A,6,,inner diameter
+6DT-09SS,B,8,,outer diameter
+6DT-12,A,6,,inner diameter
+6DT-12,B,8,,outer diameter
+6DT-12B,A,6,,inner diameter
+6DT-12B,B,8,,outer diameter
+6DT-12SS,A,6,,inner diameter
+6DT-12SS,B,8,,outer diameter
+6DT-18,A,6,,inner diameter
+6DT-18,B,8,,outer diameter
+6DT-18SS,A,6,,inner diameter
+6DT-18SS,B,8,,outer diameter
+6DT-24,A,6,,inner diameter
+6DT-24,B,8,,outer diameter
+6DT-24CF,A,6,,inner diameter
+6DT-24CF,B,8,,outer diameter
+6DT-24SS,A,6,,inner diameter
+6DT-24SS,B,8,,outer diameter
+6DT-24SSCF,A,6,,inner diameter
+6DT-24SSCF,B,8,,outer diameter
+6DT-36,A,6,,inner diameter
+6DT-36,B,8,,outer diameter
+6DT-36CF,A,6,,inner diameter
+6DT-36CF,B,8,,outer diameter
+6DT-36SS,A,6,,inner diameter
+6DT-36SS,B,8,,outer diameter
+6DT-36SSCF,A,6,,inner diameter
+6DT-36SSCF,B,8,,outer diameter
+6DT-48,A,6,,inner diameter
+6DT-48,B,8,,outer diameter
+6DT-48CF,A,6,,inner diameter
+6DT-48CF,B,8,,outer diameter
+6DT-48SS,A,6,,inner diameter
+6DT-48SS,B,8,,outer diameter
+6DT-48SSCF,A,6,,inner diameter
+6DT-48SSCF,B,8,,outer diameter
+6DT-60CF,A,6,,inner diameter
+6DT-60CF,B,8,,outer diameter
+6DT-60SSCF,A,6,,inner diameter
+6DT-60SSCF,B,8,,outer diameter
+7DT-06,A,7,,inner diameter
+7DT-06,B,9,,outer diameter
+7DT-06B,A,7,,inner diameter
+7DT-06B,B,9,,outer diameter
+7DT-06SS,A,7,,inner diameter
+7DT-06SS,B,9,,outer diameter
+7DT-09,A,7,,inner diameter
+7DT-09,B,9,,outer diameter
+7DT-09B,A,7,,inner diameter
+7DT-09B,B,9,,outer diameter
+7DT-09SS,A,7,,inner diameter
+7DT-09SS,B,9,,outer diameter
+7DT-12,A,7,,inner diameter
+7DT-12,B,9,,outer diameter
+7DT-12B,A,7,,inner diameter
+7DT-12B,B,9,,outer diameter
+7DT-12SS,A,7,,inner diameter
+7DT-12SS,B,9,,outer diameter
+7DT-18,A,7,,inner diameter
+7DT-18,B,9,,outer diameter
+7DT-18SS,A,7,,inner diameter
+7DT-18SS,B,9,,outer diameter
+7DT-24,A,7,,inner diameter
+7DT-24,B,9,,outer diameter
+7DT-24CF,A,7,,inner diameter
+7DT-24CF,B,9,,outer diameter
+7DT-24SS,A,7,,inner diameter
+7DT-24SS,B,9,,outer diameter
+7DT-24SSCF,A,7,,inner diameter
+7DT-24SSCF,B,9,,outer diameter
+7DT-36,A,7,,inner diameter
+7DT-36,B,9,,outer diameter
+7DT-36CF,A,7,,inner diameter
+7DT-36CF,B,9,,outer diameter
+7DT-36SS,A,7,,inner diameter
+7DT-36SS,B,9,,outer diameter
+7DT-36SSCF,A,7,,inner diameter
+7DT-36SSCF,B,9,,outer diameter
+7DT-48,A,7,,inner diameter
+7DT-48,B,9,,outer diameter
+7DT-48CF,A,7,,inner diameter
+7DT-48CF,B,9,,outer diameter
+7DT-48SS,A,7,,inner diameter
+7DT-48SS,B,9,,outer diameter
+7DT-48SSCF,A,7,,inner diameter
+7DT-48SSCF,B,9,,outer diameter
+7DT-60CF,A,7,,inner diameter
+7DT-60CF,B,9,,outer diameter
+7DT-60SSCF,A,7,,inner diameter
+7DT-60SSCF,B,9,,outer diameter
+8DT-06,A,8,,inner diameter
+8DT-06,B,10,,outer diameter
+8DT-06B,A,8,,inner diameter
+8DT-06B,B,10,,outer diameter
+8DT-06SS,A,8,,inner diameter
+8DT-06SS,B,10,,outer diameter
+8DT-09,A,8,,inner diameter
+8DT-09,B,10,,outer diameter
+8DT-09B,A,8,,inner diameter
+8DT-09B,B,10,,outer diameter
+8DT-09SS,A,8,,inner diameter
+8DT-09SS,B,10,,outer diameter
+8DT-12,A,8,,inner diameter
+8DT-12,B,10,,outer diameter
+8DT-12B,A,8,,inner diameter
+8DT-12B,B,10,,outer diameter
+8DT-12SS,A,8,,inner diameter
+8DT-12SS,B,10,,outer diameter
+8DT-18,A,8,,inner diameter
+8DT-18,B,10,,outer diameter
+8DT-18SS,A,8,,inner diameter
+8DT-18SS,B,10,,outer diameter
+8DT-24,A,8,,inner diameter
+8DT-24,B,10,,outer diameter
+8DT-24CF,A,8,,inner diameter
+8DT-24CF,B,10,,outer diameter
+8DT-24SS,A,8,,inner diameter
+8DT-24SS,B,10,,outer diameter
+8DT-24SSCF,A,8,,inner diameter
+8DT-24SSCF,B,10,,outer diameter
+8DT-36,A,8,,inner diameter
+8DT-36,B,10,,outer diameter
+8DT-36CF,A,8,,inner diameter
+8DT-36CF,B,10,,outer diameter
+8DT-36SS,A,8,,inner diameter
+8DT-36SS,B,10,,outer diameter
+8DT-36SSCF,A,8,,inner diameter
+8DT-36SSCF,B,10,,outer diameter
+8DT-48,A,8,,inner diameter
+8DT-48,B,10,,outer diameter
+8DT-48CF,A,8,,inner diameter
+8DT-48CF,B,10,,outer diameter
+8DT-48SS,A,8,,inner diameter
+8DT-48SS,B,10,,outer diameter
+8DT-48SSCF,A,8,,inner diameter
+8DT-48SSCF,B,10,,outer diameter
+8DT-60CF,A,8,,inner diameter
+8DT-60CF,B,10,,outer diameter
+8DT-60SSCF,A,8,,inner diameter
+8DT-60SSCF,B,10,,outer diameter
+5DT-06SS,A,5,,inner diameter
+5DT-06SS,B,7,,outer diameter
+5DT-09SS,A,5,,inner diameter
+5DT-09SS,B,7,,outer diameter
+5DT-12SS,A,5,,inner diameter
+5DT-12SS,B,7,,outer diameter
+5DT-18SS,A,5,,inner diameter
+5DT-18SS,B,7,,outer diameter
+5DT-24SS,A,5,,inner diameter
+5DT-24SS,B,7,,outer diameter
+5DT-24SSCF,A,5,,inner diameter
+5DT-24SSCF,B,7,,outer diameter
+5DT-36SS,A,5,,inner diameter
+5DT-36SS,B,7,,outer diameter
+5DT-36SSCF,A,5,,inner diameter
+5DT-36SSCF,B,7,,outer diameter
+5DT-48SS,A,5,,inner diameter
+5DT-48SS,B,7,,outer diameter
+5DT-48SSCF,A,5,,inner diameter
+5DT-48SSCF,B,7,,outer diameter
+5DT-60SSCF,A,5,,inner diameter
+5DT-60SSCF,B,7,,outer diameter
+6DT-E15K,H,4.5,,height of each elbow section per drawing
+7DT-E15K,H,4.5,,height of each elbow section per drawing
+8DT-E15K,H,4.5,,height of each elbow section per drawing
+5DT-E15KSS,H,4.5,,height of each elbow section per drawing
+6DT-E15KSS,H,4.5,,height of each elbow section per drawing
+7DT-E15KSS,H,4.5,,height of each elbow section per drawing
+8DT-E15KSS,H,4.5,,height of each elbow section per drawing
+6DT-E30K,H,4.5,,height of each elbow section per drawing
+7DT-E30K,H,4.5,,height of each elbow section per drawing
+8DT-E30K,H,4.5,,height of each elbow section per drawing
+5DT-E30KSS,H,4.5,,height of each elbow section per drawing
+6DT-E30KSS,H,4.5,,height of each elbow section per drawing
+7DT-E30KSS,H,4.5,,height of each elbow section per drawing
+8DT-E30KSS,H,4.5,,height of each elbow section per drawing
+5DT-AES,STRAP_LEN,16,,strap length
+6DT-AES,STRAP_LEN,16,,strap length
+6DT-ST,A,6,,
+6DT-ST,B,8,,
+6DT-ST,C,6.125,,
+6DT-ST,D,6.5,,
+6DT-ST,E,13.875,,overall height
+7DT-ST,A,7,,
+7DT-ST,B,9,,
+7DT-ST,C,6.5,,
+7DT-ST,D,7.5,,
+7DT-ST,E,14.25,,overall height
+8DT-ST,A,8,,
+8DT-ST,B,10,,
+8DT-ST,C,7.125,,
+8DT-ST,D,7.75,,
+8DT-ST,E,15.25,,overall height
+5DT-STSS,A,5,,
+5DT-STSS,B,7,,
+5DT-STSS,C,5.5,,
+5DT-STSS,D,6,,
+5DT-STSS,E,12.625,,overall height
+6DT-STSS,A,6,,
+6DT-STSS,B,8,,
+6DT-STSS,C,6.125,,
+6DT-STSS,D,6.5,,
+6DT-STSS,E,13.875,,overall height
+7DT-STSS,A,7,,
+7DT-STSS,B,9,,
+7DT-STSS,C,6.5,,
+7DT-STSS,D,7.5,,
+7DT-STSS,E,14.25,,overall height
+8DT-STSS,A,8,,
+8DT-STSS,B,10,,
+8DT-STSS,C,7.125,,
+8DT-STSS,D,7.75,,
+8DT-STSS,E,15.25,,overall height
+5DT-LB,A,7,,
+6DT-LB,A,8,,
+7DT-LB,A,9,,
+8DT-LB,A,10,,
+5DT-CS11-2,A,5,,
+5DT-CS11-2,B,11,,box width
+5DT-CS11-2,C,1.75,,flue extension
+6DT-CS11-2,A,6,,
+6DT-CS11-2,B,12,,box width
+6DT-CS11-2,C,1.75,,flue extension
+7DT-CS11-2,A,7,,
+7DT-CS11-2,B,13,,box width
+7DT-CS11-2,C,1.75,,flue extension
+8DT-CS11-2,A,8,,
+8DT-CS11-2,B,14.25,,box width
+8DT-CS11-2,C,1.75,,flue extension
+6DT-CS24-2,A,6,,
+6DT-CS24-2,B,12,,box width
+6DT-CS24-2,C,1.75,,flue extension
+7DT-CS24-2,A,7,,
+7DT-CS24-2,B,13,,box width
+7DT-CS24-2,C,1.75,,flue extension
+8DT-CS24-2,A,8,,
+8DT-CS24-2,B,14.25,,box width
+8DT-CS24-2,C,1.75,,flue extension
+6DT-CS36-2,A,6,,
+6DT-CS36-2,B,12,,box width
+6DT-CS36-2,C,1.75,,flue extension
+7DT-CS36-2,A,7,,
+7DT-CS36-2,B,13,,box width
+7DT-CS36-2,C,1.75,,flue extension
+8DT-CS36-2,A,8,,
+8DT-CS36-2,B,14.25,,box width
+8DT-CS36-2,C,1.75,,flue extension
+6DT-CS24R-2,A,6,,
+6DT-CS24R-2,B,10,,box width
+6DT-CS24R-2,C,1.75,,
+6DT-CS24IS-2,A,6,,
+6DT-CS24IS-2,B,12,,box width
+6DT-CS24IS-2,C,1.75,,
+6DT-CS36IS-2,A,6,,
+6DT-CS36IS-2,B,12,,box width
+6DT-CS36IS-2,C,1.75,,
+6DT-CS24RIS-2,A,6,,
+6DT-CS24RIS-2,B,10,,box width
+6DT-CS24RIS-2,C,1.75,,
+6DT-RCS-2,A,6,,
+6DT-RCS-2,OD,12,,
+7DT-RCS-2,A,7,,
+7DT-RCS-2,OD,13,,
+8DT-RCS-2,A,8,,
+8DT-RCS-2,OD,14,,
+6DT-TC-2,A,12.125,,
+6DT-TC-2,B,17,,
+6DT-TCR-2,A,12.125,,
+6DT-TCR-2,B,18,,
+7DT-TC-2,A,13.125,,
+7DT-TC-2,B,18,,
+7DT-TCR-2,A,13.125,,
+7DT-TCR-2,B,21,,
+8DT-TC-2,A,14.125,,
+8DT-TC-2,B,19,,
+8DT-TCR-2,A,14.125,,
+8DT-TCR-2,B,21,,
+6DT-FCS-2,A,6,,
+6DT-FCS-2,B,12,,
+7DT-FCS-2,A,7,,
+7DT-FCS-2,B,13,,
+8DT-FCS-2,A,8,,
+8DT-FCS-2,B,14.25,,
+5DT-FRS,A,7.125,,
+5DT-FRS,B,10.875,,
+5DT-FRS,C,13,,
+5DT-IS,A,7,,
+5DT-IS,B,13,,
+5DT-RRS,A,9,,
+6DT-FRS,A,8.125,,
+6DT-FRS,B,11.875,,
+6DT-FRS,C,14,,
+6DT-IS,A,8,,
+6DT-IS,B,14,,
+6DT-RRS,A,10,,
+7DT-FRS,A,9.125,,
+7DT-FRS,B,12.875,,
+7DT-FRS,C,15,,
+7DT-IS,A,9,,
+7DT-IS,B,15,,
+7DT-RRS,A,11,,
+8DT-FRS,A,10.125,,
+8DT-FRS,B,13.875,,
+8DT-FRS,C,16,,
+8DT-IS,A,10,,
+8DT-IS,B,16,,
+8DT-RRS,A,12,,
+6DT-SRSE,A,12,,
+6DT-SRSE,B,12,,
+6DT-SRSE,C,8.25,,
+7DT-SRSE,A,13,,
+7DT-SRSE,B,13,,
+7DT-SRSE,C,9.25,,
+8DT-SRSE,A,14.25,,
+8DT-SRSE,B,14.25,,
+8DT-SRSE,C,10.25,,
+5DT-RSTC3,A,18,,
+5DT-RSTC3,B,7.25,,
+6DT-RSTC3,A,18,,
+6DT-RSTC3,B,8.25,,
+7DT-RSTC3,A,20,,
+7DT-RSTC3,B,9.25,,
+8DT-RSTC3,A,20,,
+8DT-RSTC3,B,10.25,,
+5DT-RSTC6,A,18,,
+5DT-RSTC6,B,7.25,,
+6DT-RSTC6,A,18,,
+6DT-RSTC6,B,8.25,,
+7DT-RSTC6,A,20,,
+7DT-RSTC6,B,9.25,,
+8DT-RSTC6,A,20,,
+8DT-RSTC6,B,10.25,,
+5DT-RSTC9,A,18,,
+5DT-RSTC9,B,7.25,,
+6DT-RSTC9,A,18,,
+6DT-RSTC9,B,8.25,,
+7DT-RSTC9,A,20,,
+7DT-RSTC9,B,9.25,,
+8DT-RSTC9,A,20,,
+8DT-RSTC9,B,10.25,,
+5DT-RSTC12,A,18,,
+5DT-RSTC12,B,7.25,,
+6DT-RSTC12,A,18,,
+6DT-RSTC12,B,8.25,,
+7DT-RSTC12,A,20,,
+7DT-RSTC12,B,9.25,,
+8DT-RSTC12,A,20,,
+8DT-RSTC12,B,10.25,,
+5DT-FC,A,5,,
+5DT-FC,B,6.5,,
+5DT-FC,C,7,,
+6DT-FC,A,6,,
+6DT-FC,B,7.5,,
+6DT-FC,C,8,,
+7DT-FC,A,7,,
+7DT-FC,B,8.5,,
+7DT-FC,C,9,,
+8DT-FC,A,8,,
+8DT-FC,B,9.5,,
+8DT-FC,C,10,,
+5DT-WT,A,7.125,,
+5DT-WT,B,14,,
+5DT-WT,C,10.875,,
+5DT-WT,D,13,,
+6DT-WT,A,8.125,,
+6DT-WT,B,14,,
+6DT-WT,C,11.875,,
+6DT-WT,D,14,,
+7DT-WT,A,9.125,,
+7DT-WT,B,16,,
+7DT-WT,C,12.875,,
+7DT-WT,D,15,,
+8DT-WT,A,10.125,,
+8DT-WT,B,16,,
+8DT-WT,C,13.875,,
+8DT-WT,D,16,,
+5DT-IWT,A,7.25,,
+5DT-IWT,B,13,,
+5DT-IWT,C,11,,
+6DT-IWT,A,8.25,,
+6DT-IWT,B,14,,
+6DT-IWT,C,12,,
+7DT-IWT,A,9.25,,
+7DT-IWT,B,15,,
+7DT-IWT,C,13,,
+8DT-IWT,A,10.25,,
+8DT-IWT,B,16,,
+8DT-IWT,C,14,,
+5DT-AP,A,5,,
+5DT-AP,B,7,,
+5DT-AP,C,9,,
+6DT-AP,A,6,,
+6DT-AP,B,8,,
+6DT-AP,C,10,,
+7DT-AP,A,7,,
+7DT-AP,B,9,,
+7DT-AP,C,11,,
+8DT-AP,A,8,,
+8DT-AP,B,10,,
+8DT-AP,C,12,,
+6DT-AP14x17,A,14,,
+6DT-AP14x17,B,17,,
+6DT-AP17x17,A,17,,
+6DT-AP17x17,B,17,,
+6DT-AP13x21,A,13,,
+6DT-AP13x21,B,21,,
+6DT-AP17x21,A,17,,
+6DT-AP17x21,B,21,,
+8DT-AP14x17,A,14,,
+8DT-AP14x17,B,17,,
+8DT-AP17x17,A,17,,
+8DT-AP17x17,B,17,,
+8DT-AP13x21,A,13,,
+8DT-AP13x21,B,21,,
+8DT-AP17x21,A,17,,
+8DT-AP17x21,B,21,,
+5DT-F6,A,7.5,,
+5DT-F6,B,19,,
+5DT-F6,C,26,,
+6DT-F6,A,8.5,,
+6DT-F6,B,20,,
+6DT-F6,C,27.1875,,
+7DT-F6,A,9.5,,
+7DT-F6,B,21,,
+7DT-F6,C,28.3125,,
+8DT-F6,A,10.5,,
+8DT-F6,B,22,,
+8DT-F6,C,29.5,,
+5DT-F12,A,7.5,,
+5DT-F12,B,19,,
+5DT-F12,C,28.4375,,
+6DT-F12,A,8.5,,
+6DT-F12,B,20,,
+6DT-F12,C,30,,
+7DT-F12,A,9.5,,
+7DT-F12,B,21,,
+7DT-F12,C,31.3125,,
+8DT-F12,A,10.5,,
+8DT-F12,B,22,,
+8DT-F12,C,33.25,,
+5DT-F18,A,7.5,,
+5DT-F18,B,19,,
+5DT-F18,C,32.5625,,
+6DT-F18,A,8.5,,
+6DT-F18,B,20,,
+6DT-F18,C,34.375,,
+7DT-F18,A,9.5,,
+7DT-F18,B,21,,
+7DT-F18,C,36.1875,,
+8DT-F18,A,10.5,,
+8DT-F18,B,22,,
+8DT-F18,C,38,,
+5DT-F24,A,7.5,,
+5DT-F24,B,19,,
+5DT-F24,C,37.3125,,
+6DT-F24,A,8.5,,
+6DT-F24,B,20,,
+6DT-F24,C,39.5,,
+7DT-F24,A,9.5,,
+7DT-F24,B,21,,
+7DT-F24,C,41.75,,
+8DT-F24,A,10.5,,
+8DT-F24,B,22,,
+8DT-F24,C,44,,
+5DT-FF,A,7.25,,
+5DT-FF,B,19.4375,,
+6DT-FF,A,8.25,,
+6DT-FF,B,20.6875,,
+7DT-FF,A,9.25,,
+7DT-FF,B,21.625,,
+8DT-FF,A,10.25,,
+8DT-FF,B,21.625,,
+6DT-F6L,A,8.25,,
+6DT-F6L,B,28,,
+7DT-F6L,A,9.25,,
+7DT-F6L,B,29,,
+8DT-F6L,A,10.25,,
+8DT-F6L,B,30,,
+6DT-F12L,A,8.25,,
+6DT-F12L,B,28,,
+7DT-F12L,A,9.25,,
+7DT-F12L,B,29,,
+8DT-F12L,A,10.25,,
+8DT-F12L,B,30,,
+5DT-CTF,A,10,,
+5DT-CTF,B,18.75,,
+6DT-CTF,A,11,,
+6DT-CTF,B,19.75,,
+7DT-CTF,A,12,,
+7DT-CTF,B,20.75,,
+8DT-CTF,A,13,,
+8DT-CTF,B,21.75,,
+5DT-VC,A,5,,
+5DT-VC,B,7,,
+5DT-VC,C,11,,
+5DT-VC,D,6.5,,
+6DT-VC,A,6,,
+6DT-VC,B,8,,
+6DT-VC,C,11,,
+6DT-VC,D,6.5,,
+7DT-VC,A,7,,
+7DT-VC,B,9,,
+7DT-VC,C,15,,
+7DT-VC,D,6.5,,
+8DT-VC,A,8,,
+8DT-VC,B,10,,
+8DT-VC,C,15,,
+8DT-VC,D,6.5,,
+195802,A,17.25,,
+195802,B,6,,
+195802,C,4.75,,
+196802,A,19.25,,
+196802,B,7,,
+196802,C,5.75,,
+197802,A,19.25,,
+197802,B,8,,
+197802,C,6.75,,
+198802,A,19.25,,
+198802,B,9,,
+198802,C,7.75,,

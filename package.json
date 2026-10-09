@@ -1,0 +1,9 @@
+{
+  "name": "chimney-planner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:catalog": "python3 tools/build_catalog.py",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
